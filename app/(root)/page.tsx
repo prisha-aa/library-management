@@ -1,8 +1,21 @@
-import { Button } from "@/components/ui/button";
+import BookList from '@/components/BookList'
+import BookOverview from '@/components/BookOverview'
+import { sampleBooks } from '@/constants'
+import React from 'react'
 
-export default function Home() {
+const Home = () => {
   return (
-  <>
-  <Button>click me</Button></>
-  );
+    <div>
+      <BookOverview {...sampleBooks[0]}/>
+
+      <BookList
+      title="Latest Books"
+      books={sampleBooks}
+      containerClassName="mt-28"
+      />
+      
+    </div>
+  )
 }
+
+export default Home
