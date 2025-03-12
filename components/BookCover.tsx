@@ -15,7 +15,7 @@ interface Props{
     classname?:string;
     variant: BookCoverVariant;
     coverCOlor:string;
-    coverUrl:string;
+    coverImage:string;
 }
 
 const BookCover = ({
@@ -30,7 +30,7 @@ const BookCover = ({
     className={cn('relative transition-all duration-300',variantStyles[variant],
         className,
     )}>
-      BOOK SIDE SVG
+       <BookCoverSvg coverColor={coverColor} />
       <div className="absolute z-10" style={{ left: "12%", width: "87.5%", height: "88%" }}>
         <Image 
         src={coverImage} 
