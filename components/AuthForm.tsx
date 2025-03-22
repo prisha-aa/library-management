@@ -24,9 +24,11 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import FileUpload from "@/components/ImageUpload";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/ImageUpload";
+import { toast } from "sonner";
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
@@ -51,7 +53,24 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleSubmit: SubmitHandler<T> = async (data) => {
-    // const result = await onSubmit(data);
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      toast(
+        <div>
+          <strong>Success:</strong> {isSignIn ? "You have successfully signed in." : "You have successfully signed up."}
+        </div>
+      );
+    
+      router.push("/");
+    } else {
+      toast(
+        <div style={{ color: "red" }}>
+          <strong>Error {isSignIn ? "signing in" : "signing up"}:</strong> {result.error ?? "An error occurred."}
+        </div>
+      );
+    }
+    
 
     // if (result.success) {
     //   toast({
