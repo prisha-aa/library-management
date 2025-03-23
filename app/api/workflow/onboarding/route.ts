@@ -62,7 +62,8 @@ export const { POST } = serve<InitialData>(async (context) => {
         await sendEmail({
           email,
           subject: "Are you still there?",
-          message: `Hey ${fullName}, we miss you!`,
+          message: 
+          `Hey ${fullName}, we miss you!`,
         });
       });
     } else if (state === "active") {
