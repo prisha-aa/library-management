@@ -23,11 +23,11 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
-import FileUpload from "@/components/ImageUpload";
+import FileUpload from "@/components/FileUpload";
 import { useToast } from "@/components/ui/use-toast";
 
 import { useRouter } from "next/navigation";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUpload from "@/components/FileUpload";
 import { toast } from "sonner";
 
 interface Props<T extends FieldValues> {
@@ -117,7 +117,7 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === "universityCard" ? (
-                      <ImageUpload
+                      <FileUpload
                         type="image"
                         accept="image/*"
                         placeholder="Upload your ID"

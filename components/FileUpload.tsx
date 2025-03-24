@@ -8,6 +8,7 @@ import Image from "next/image";
 import React, { useRef, useState } from 'react'
 import Error from "next/error";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const {
   env: {
@@ -49,7 +50,7 @@ interface Props {
   value?: string;
 }
 
-const ImageUpload = ({
+const FileUpload = ({
   type,
   accept,
   placeholder,
@@ -64,6 +65,15 @@ const ImageUpload = ({
   });
 
   const [progress, setProgress] = useState(0);
+
+  const styles = {
+    button:
+      variant === "dark"
+        ? "bg-dark-300"
+        : "bg-light-600 border-gray-100 border",
+    placeholder: variant === "dark" ? "text-light-100" : "text-slate-500",
+    text: variant === "dark" ? "text-light-100" : "text-dark-400",
+  };
 
   
 
@@ -86,21 +96,47 @@ const onSuccess = (res: any) => {
   });
 };
 
+const onValidate = (file: File, type: string) => {
+  if (type === "image") {
+    if (file.size > 20 * 1024 * 1024) {
+      toast.error("File size too large. Please upload a file less than 20MB in size.");
+      return false;
+    }
+  } else if (type === "video") {
+    if (file.size > 50 * 1024 * 1024) {
+      toast.error("File size too large. Please upload a file less than 50MB in size.");
+      return false;
+    }
+  }
+
+  return true;
+};
+
 
   return (
   <ImageKitProvider publicKey={publicKey}
   urlEndpoint={urlEndpoint}
   authenticator={authenticator}
   >
-    <IKUpload 
-    className="hidden" 
-    ref={ikUploadRef}
-    onError={onError}
-    onSuccess={onSuccess}
-    fileName="test-upload.png"
-    />
+    <IKUpload
+        ref={ikUploadRef}
+        onError={onError}
+        onSuccess={onSuccess}
+        useUniqueFileName={true}
+        validateFile={onValidate}
+        onUploadStart={() => setProgress(0)}
+        onUploadProgress={({ loaded, total }) => {
+          const percent = Math.round((loaded / total) * 100);
+
+          setProgress(percent);
+        }}
+        folder={folder}
+        accept={accept}
+        className="hidden"
+      />
+
      <button
-        className="upload-btn"
+         className={cn("upload-btn", styles.button)}
         onClick={(e) => {
           e.preventDefault();
 
@@ -118,12 +154,20 @@ const onSuccess = (res: any) => {
           className="object-contain"
         />
 
-        <p className="text-base text-light-100">Upload a file</p>
+      <p className={cn("text-base", styles.placeholder)}>{placeholder}</p>
 
-        {file && (
-          <p className="upload-filename">{file.filePath}</p>
-        )}
+      {file && (
+        <p className={cn("upload-filename", styles.text)}>{file.filePath}</p>
+      )}
       </button>
+
+      {progress > 0 && progress !== 100 && (
+        <div className="w-full rounded-full bg-green-200">
+          <div className="progress" style={{ width: `${progress}%` }}>
+            {progress}%
+          </div>
+        </div>
+      )}
 
     
 
@@ -146,4 +190,4 @@ const onSuccess = (res: any) => {
   );
 } 
 
-export default ImageUpload
+export default FileUpload

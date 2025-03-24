@@ -17,7 +17,9 @@ import { useRouter } from "next/navigation";
 import { bookSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-
+import FileUpload from "@/components/FileUpload";
+import ColorPicker from "@/components/admin/ColorPicker";
+// import { createBook } from "@/lib/admin/actions/book";
 import { toast } from "@/hooks/use-toast";
 
 interface Props extends Partial<Book> {
@@ -235,7 +237,7 @@ const BookForm = ({ type, ...book }: Props) => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name={"videoUrl"}
           render={({ field }) => (
@@ -257,7 +259,7 @@ const BookForm = ({ type, ...book }: Props) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name={"summary"}
